@@ -4,6 +4,10 @@ require('dotenv').config();
 const fs = require('fs');
 const Discord = require('discord.js');
 const { prefix } = require('./config.json');
+const dbConnect = require('./dbConnection');
+
+// connect to MongoDB
+dbConnect();
 
 // Create the client
 const Client = new Discord.Client();
@@ -30,6 +34,13 @@ Client.once('ready', () => {
 // main message handler for the bot
 Client.on('message', (message) => {
   if (!message.content.startsWith(prefix) || message.author.bot) return;
+
+  // restrict bot access to only the guild owner
+  //   if (message.guild.ownerID !== message.author.id) {
+  //     console.log('owner', message.guild.ownerID);
+  //     console.log('author', message.author.id);
+  //     return;
+  //   }
 
   const args = message.content.slice(prefix.length).split(/ +/);
   const commandName = args.shift().toLowerCase();
