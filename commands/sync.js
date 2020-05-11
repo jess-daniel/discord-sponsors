@@ -1,9 +1,9 @@
+const saveGuild = require('../helpers/saveGuild');
+
 module.exports = {
-  name: 'init',
+  name: 'sync',
   description: 'Grabs the necessary server info and saves to the database',
   execute(message, args) {
-    // TODO: check user has permission to do this
-
     // checks that the init command was used in a guild channel
     if (!message.guild) {
       message.reply("You must use the '_init' command in the server");
@@ -12,8 +12,9 @@ module.exports = {
     if (!message.guild.available) {
       message.reply('This server is not available');
     }
+
+    // grabs guild id to check if guild is already in DB
     const guildId = message.guild.id;
-    console.log('guildID', guildId);
 
     // get all channel values from collection
     const guildChannels = message.guild.channels.cache;
@@ -33,25 +34,19 @@ module.exports = {
     // captures guild data to save to database
     const guildData = {
       owner: message.guild.name,
+      ownerId: message.guild.ownerID,
+      guildId: guildId,
       guildName: message.guild.name,
+      region: message.guild.region,
       partnerStatus: message.guild.partnered,
       membersCount: message.guild.memberCount,
-      channelNames: channelNames,
+      textChannelNames: channelNames,
       textChannelCount: textChannels.length,
     };
+    // log guild data
     console.log(guildData);
 
-    // sends DM and data to the owner
-    return message.author
-      .send(JSON.stringify(guildData), { split: true })
-      .then(() => {
-        if (message.channel.type === 'dm') return;
-        message.reply("I've sent you a DM with your info");
-      })
-      .catch((error) => {
-        console.error(`Could not send a helpful DM to ${message.author.tag}`);
-        console.error(error);
-        message.reply("I can't DM you for some reason :/");
-      });
+    // save guild to database
+    saveGuild(message, guildData, guildId);
   },
 };
