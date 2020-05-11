@@ -6,7 +6,7 @@ module.exports = {
   execute(message, args) {
     // checks that the init command was used in a guild channel
     if (!message.guild) {
-      message.reply("You must use the '_init' command in the server");
+      message.reply("You must use the '_sync' command in the server");
     }
     // checks that the bot can access guild data
     if (!message.guild.available) {
@@ -42,6 +42,7 @@ module.exports = {
       membersCount: message.guild.memberCount,
       textChannelNames: channelNames,
       textChannelCount: textChannels.length,
+      syncedLast: Date.now(),
     };
     // log guild data
     console.log(guildData);

@@ -2,6 +2,7 @@ const Guild = require('../Models/guildModel');
 
 const updateGuild = async (message, guild, guildID) => {
   try {
+    // updates guild in DB and returns updated guild object
     const updatedGuild = await Guild.findOneAndUpdate(
       { guildId: guildID },
       guild,
@@ -9,7 +10,8 @@ const updateGuild = async (message, guild, guildID) => {
     );
 
     if (updatedGuild) {
-      await message.author.send(JSON.stringify(guild), { split: true });
+      // sends new guild data to author if successfully updated
+      await message.author.send(JSON.stringify(updatedGuild), { split: true });
       if (message.channel.type === 'dm') return;
       message.reply("I've sent you a DM with your info");
     }

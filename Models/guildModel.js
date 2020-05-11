@@ -37,10 +37,14 @@ const guildSchema = mongoose.Schema({
     type: Number,
     required: true,
   },
-  updatedAt: {
+  createdAt: {
     type: Date,
     required: true,
     default: Date.now,
+  },
+  syncedLast: {
+    type: Date,
+    required: true,
   },
 });
 

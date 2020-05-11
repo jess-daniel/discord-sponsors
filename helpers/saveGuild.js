@@ -3,17 +3,21 @@ const updateGuild = require('../helpers/updateGuild');
 
 const saveGuild = async (message, guild, guildID) => {
   try {
+    // checks to see if guild is in DB already
     const currentGuild = await Guild.findOne({ guildId: guildID });
 
     if (currentGuild) {
+      // updates guild if in DB
       await updateGuild(message, guild, guildID);
       return;
     }
 
+    // creates new guild in DB if not present
     const newGuild = new Guild(guild);
 
     await newGuild.save();
 
+    // sends DM to autor with guild data
     await message.author.send(JSON.stringify(guild), { split: true });
 
     if (message.channel.type === 'dm') return;
