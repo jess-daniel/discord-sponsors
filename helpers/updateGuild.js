@@ -11,9 +11,9 @@ const updateGuild = async (message, guild, guildID) => {
 
     if (updatedGuild) {
       // sends new guild data to author if successfully updated
-      await message.author.send(JSON.stringify(updatedGuild), { split: true });
+      // await message.author.send(JSON.stringify(updatedGuild), { split: true });
       if (message.channel.type === 'dm') return;
-      message.reply("I've sent you a DM with your info");
+      message.channel.send("I've updated your server metrics ;)");
     }
   } catch (error) {
     console.error(`Could not send a DM to ${message.author.tag} \n ${error}`);

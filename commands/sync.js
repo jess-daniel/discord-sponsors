@@ -1,4 +1,6 @@
 const saveGuild = require('../helpers/saveGuild');
+const getHumanUsers = require('../helpers/getHumanUsers');
+const getTextChannels = require('../helpers/getTextChannels');
 
 module.exports = {
   name: 'sync',
@@ -16,20 +18,11 @@ module.exports = {
     // grabs guild id to check if guild is already in DB
     const guildId = message.guild.id;
 
-    // get all channel values from collection
-    const guildChannels = message.guild.channels.cache;
-    const values = Array.from(guildChannels.values());
+    // gets the text channels and channel names
+    const [textChannels, channelNames] = getTextChannels(message);
 
-    // capture just the text channels
-    let textChannels = [];
-    textChannels = values.filter((channel) => {
-      return channel.type === 'text';
-    });
-
-    // names of text channels
-    const channelNames = textChannels.map((channel) => {
-      return channel.name;
-    });
+    // get server member count minus bots
+    const humanCount = getHumanUsers(message);
 
     // captures guild data to save to database
     const guildData = {
@@ -39,7 +32,7 @@ module.exports = {
       guildName: message.guild.name,
       region: message.guild.region,
       partnerStatus: message.guild.partnered,
-      membersCount: message.guild.memberCount,
+      membersCount: humanCount,
       textChannelNames: channelNames,
       textChannelCount: textChannels.length,
       syncedLast: Date.now(),
