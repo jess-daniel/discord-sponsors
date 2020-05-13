@@ -1,10 +1,11 @@
 const Guild = require('../Models/guildModel');
 const updateGuild = require('../helpers/updateGuild');
+const getGuild = require('../helpers/getGuild');
 
 const saveGuild = async (message, guild, guildID) => {
   try {
     // checks to see if guild is in DB already
-    const currentGuild = await Guild.findOne({ guildId: guildID });
+    const currentGuild = await getGuild(guildID);
 
     if (currentGuild) {
       // updates guild if in DB
