@@ -33,14 +33,14 @@ Client.once('ready', () => {
 
 // main message handler for the bot
 Client.on('message', (message) => {
-  if (!message.content.startsWith(prefix) || message.author.bot) return;
+  if (!message.content.startsWith(prefix)) return;
 
   // restrict bot access to only the guild owner
-  //   if (message.guild.ownerID !== message.author.id) {
-  //     console.log('owner', message.guild.ownerID);
-  //     console.log('author', message.author.id);
-  //     return;
-  //   }
+  // if (message.guild.ownerID !== message.author.id) {
+  //   console.log('owner', message.guild.ownerID);
+  //   console.log('author', message.author.id);
+  //   return;
+  // }
 
   const args = message.content.slice(prefix.length).split(/ +/);
   const commandName = args.shift().toLowerCase();
