@@ -1,7 +1,10 @@
+const runSync = require('../helpers/runSync');
+
 module.exports = {
   name: 'init',
   description: 'Run the init command first to setup the bot',
   execute(message, args) {
+    // checks that the message was in a guild
     if (!message.guild) {
       message.reply("You must use the '_init' command in the server");
     }
@@ -10,17 +13,22 @@ module.exports = {
       message.reply('This server is not available');
     }
 
-    // send sync 1 time
-    message.channel.send('_sync');
-
-    const runSync = (message) => {
+    // sets the _sync interval if true or clears the interval if false
+    if (args[0] === 'run') {
+      // send _sync once
       message.channel.send('_sync');
-    };
-
-    // interval set to 5 minutes
-    const interval = 1000 * 60 * 5;
-
-    // runs sync command at set interval
-    message.client.setInterval(runSync, 10000, message);
+      // set interval
+      return (interval = runSync(message));
+    } else if (args[0] === 'stop') {
+      // clear interval
+      message.client.clearInterval(interval);
+      // send message
+      message.channel.send("I've stopped the bot");
+    } else {
+      // if no args passed send message
+      return message.channel.send(
+        'You must use either run or stop with this command'
+      );
+    }
   },
 };
