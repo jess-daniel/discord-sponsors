@@ -37,6 +37,7 @@ module.exports = {
     if (command.description) data.push(`Description: ${command.description}`);
     if (command.usage)
       data.push(`Usage: ${prefix}${command.name} ${command.usage}`);
+    if (command.args) data.push(`Args: ${command.args}`);
 
     message.channel.send(data, { split: true });
   },

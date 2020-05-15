@@ -13,7 +13,19 @@ const guildSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  verified: {
+    type: Boolean,
+    required: true,
+  },
   guildName: {
+    type: String,
+    required: true,
+  },
+  guildIcon: {
+    type: String,
+    required: true,
+  },
+  guildBanner: {
     type: String,
     required: true,
   },
@@ -27,6 +39,14 @@ const guildSchema = mongoose.Schema({
   },
   membersCount: {
     type: Number,
+    required: true,
+  },
+  usersThatBoost: {
+    type: Number,
+    required: true,
+  },
+  embedEnabled: {
+    type: Boolean,
     required: true,
   },
   textChannelNames: {
